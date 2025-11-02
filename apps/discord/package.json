@@ -7,6 +7,10 @@
     "deploy:dev": "wrangler deploy",
     "deploy:prod": "wrangler deploy --env production",
     "type-check": "tsc --noEmit",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
+    "fmt": "prettier --check .",
+    "fmt:fix": "prettier --write .",
     "register-command": "tsx scripts/register-command.ts"
   },
   "dependencies": {

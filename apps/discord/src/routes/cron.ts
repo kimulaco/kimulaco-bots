@@ -1,17 +1,17 @@
-import { Hono } from 'hono';
-import type { Env } from '../index';
-import { getAwsMonthlyCost, type AwsConfig } from '@packages/aws';
-import { generateAwsSummary } from '../services/summary';
-import { sendDiscordMessage } from '../services/discord';
-import { createLogger } from '../services/logger';
+import { Hono } from "hono";
+import type { Env } from "../index";
+import { getAwsMonthlyCost, type AwsConfig } from "@packages/aws";
+import { generateAwsSummary } from "../services/summary";
+import { sendDiscordMessage } from "../services/discord";
+import { createLogger } from "../services/logger";
 
 const logger = createLogger();
 const cron = new Hono<{ Bindings: Env }>();
 
-cron.get('/health', async (c) => {
+cron.get("/health", async (c) => {
   const env = c.env;
   const health: {
-    status: 'healthy' | 'degraded' | 'unhealthy';
+    status: "healthy" | "degraded" | "unhealthy";
     checks: {
       discord?: {
         botToken: boolean;
@@ -27,17 +27,20 @@ cron.get('/health', async (c) => {
     };
     message?: string;
   } = {
-    status: 'healthy',
+    status: "healthy",
     checks: {},
   };
 
   if (env.DISCORD_BOT_TOKEN && env.DISCORD_CRON_CHANNEL_ID) {
     try {
-      const botInfoResponse = await fetch('https://discord.com/api/v10/users/@me', {
-        headers: {
-          Authorization: `Bot ${env.DISCORD_BOT_TOKEN}`,
+      const botInfoResponse = await fetch(
+        "https://discord.com/api/v10/users/@me",
+        {
+          headers: {
+            Authorization: `Bot ${env.DISCORD_BOT_TOKEN}`,
+          },
         },
-      });
+      );
 
       if (!botInfoResponse.ok) {
         health.checks.discord = {
@@ -45,9 +48,9 @@ cron.get('/health', async (c) => {
           channelAccess: false,
           error: `Invalid Bot Token: ${botInfoResponse.status}`,
         };
-        health.status = 'unhealthy';
+        health.status = "unhealthy";
       } else {
-        const botInfo = await botInfoResponse.json() as {
+        const botInfo = (await botInfoResponse.json()) as {
           id: string;
           username: string;
         };
@@ -58,7 +61,7 @@ cron.get('/health', async (c) => {
             headers: {
               Authorization: `Bot ${env.DISCORD_BOT_TOKEN}`,
             },
-          }
+          },
         );
 
         if (!channelResponse.ok) {
@@ -78,9 +81,9 @@ cron.get('/health', async (c) => {
             },
             error: errorMessage,
           };
-          health.status = 'degraded';
+          health.status = "degraded";
         } else {
-          const channelInfo = await channelResponse.json() as {
+          const channelInfo = (await channelResponse.json()) as {
             id: string;
             name: string;
             type: number;
@@ -104,18 +107,18 @@ cron.get('/health', async (c) => {
       health.checks.discord = {
         botToken: false,
         channelAccess: false,
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: error instanceof Error ? error.message : "Unknown error",
       };
-      health.status = 'unhealthy';
+      health.status = "unhealthy";
     }
   } else {
     health.checks.discord = {
       botToken: !!env.DISCORD_BOT_TOKEN,
       channelAccess: false,
-      error: 'Missing credentials',
+      error: "Missing credentials",
     };
     if (!env.DISCORD_BOT_TOKEN || !env.DISCORD_CRON_CHANNEL_ID) {
-      health.status = 'degraded';
+      health.status = "degraded";
     }
   }
 
@@ -123,51 +126,59 @@ cron.get('/health', async (c) => {
     credentials: !!(env.AWS_ACCESS_KEY_ID && env.AWS_SECRET_ACCESS_KEY),
   };
   if (!env.AWS_ACCESS_KEY_ID || !env.AWS_SECRET_ACCESS_KEY) {
-    health.status = health.status === 'healthy' ? 'degraded' : health.status;
+    health.status = health.status === "healthy" ? "degraded" : health.status;
   }
 
-  const httpStatus = health.status === 'healthy' ? 200 : health.status === 'degraded' ? 200 : 503;
+  const httpStatus =
+    health.status === "healthy"
+      ? 200
+      : health.status === "degraded"
+        ? 200
+        : 503;
 
   return c.json(health, httpStatus);
 });
 
-cron.post('/bill', async (c) => {
+cron.post("/bill", async (c) => {
   const env = c.env;
 
-  logger.info('Cron trigger received');
+  logger.info("Cron trigger received");
 
   if (!env.BILL_API_PRIVATE_KEY) {
-    logger.error('BILL_API_PRIVATE_KEY is not configured');
-    return c.json({ error: 'Server configuration error' }, 500);
+    logger.error("BILL_API_PRIVATE_KEY is not configured");
+    return c.json({ error: "Server configuration error" }, 500);
   }
 
-  const apiPrivateKey = c.req.header('Authorization')?.replace('Bearer ', '');
+  const apiPrivateKey = c.req.header("Authorization")?.replace("Bearer ", "");
   if (!apiPrivateKey || apiPrivateKey !== env.BILL_API_PRIVATE_KEY) {
-    logger.error('Invalid API key', {
+    logger.error("Invalid API key", {
       hasApiPrivateKey: !!apiPrivateKey,
     });
-    return c.json({ error: 'Unauthorized' }, 401);
+    return c.json({ error: "Unauthorized" }, 401);
   }
 
   try {
     if (!env.AWS_ACCESS_KEY_ID || !env.AWS_SECRET_ACCESS_KEY) {
-      logger.error('AWS credentials not configured');
-      return c.json({ error: 'AWS credentials not configured' }, 500);
+      logger.error("AWS credentials not configured");
+      return c.json({ error: "AWS credentials not configured" }, 500);
     }
 
     if (!env.DISCORD_BOT_TOKEN || !env.DISCORD_CRON_CHANNEL_ID) {
-      logger.error('Discord credentials not configured', {
+      logger.error("Discord credentials not configured", {
         hasBotToken: !!env.DISCORD_BOT_TOKEN,
         hasChannelId: !!env.DISCORD_CRON_CHANNEL_ID,
       });
-      return c.json({
-        error: 'Discord credentials not configured',
-        hasBotToken: !!env.DISCORD_BOT_TOKEN,
-        hasChannelId: !!env.DISCORD_CRON_CHANNEL_ID,
-      }, 500);
+      return c.json(
+        {
+          error: "Discord credentials not configured",
+          hasBotToken: !!env.DISCORD_BOT_TOKEN,
+          hasChannelId: !!env.DISCORD_CRON_CHANNEL_ID,
+        },
+        500,
+      );
     }
 
-    logger.info('Fetching AWS cost data...');
+    logger.info("Fetching AWS cost data...");
 
     const awsConfig: AwsConfig = {
       accessKeyId: env.AWS_ACCESS_KEY_ID,
@@ -175,7 +186,7 @@ cron.post('/bill', async (c) => {
     };
 
     const costData = await getAwsMonthlyCost(awsConfig);
-    logger.info('AWS cost data fetched', {
+    logger.info("AWS cost data fetched", {
       total: costData.total,
       currency: costData.currency,
       servicesCount: costData.services.length,
@@ -183,7 +194,7 @@ cron.post('/bill', async (c) => {
 
     const summary = generateAwsSummary(costData);
 
-    logger.info('Sending Discord message...', {
+    logger.info("Sending Discord message...", {
       channelId: env.DISCORD_CRON_CHANNEL_ID,
       summaryTitle: summary.title,
     });
@@ -191,24 +202,23 @@ cron.post('/bill', async (c) => {
     await sendDiscordMessage(
       env.DISCORD_BOT_TOKEN,
       env.DISCORD_CRON_CHANNEL_ID,
-      summary
+      summary,
     );
 
-    logger.info('Discord message sent successfully', {
+    logger.info("Discord message sent successfully", {
       channelId: env.DISCORD_CRON_CHANNEL_ID,
     });
 
     return c.json({
       success: true,
-      message: 'AWS cost notification sent to Discord',
+      message: "AWS cost notification sent to Discord",
     });
   } catch (error) {
-    logger.error('Error processing cron job', error);
+    logger.error("Error processing cron job", error);
     const errorMessage =
-      error instanceof Error ? error.message : 'Unknown error';
+      error instanceof Error ? error.message : "Unknown error";
     return c.json({ error: errorMessage }, 500);
   }
 });
 
 export default cron;
-

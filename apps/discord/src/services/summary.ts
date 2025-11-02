@@ -1,4 +1,4 @@
-import type { AwsCostResult } from '@packages/aws';
+import type { AwsCostResult } from "@packages/aws";
 
 export interface SummaryMessage {
   title: string;
@@ -27,7 +27,7 @@ export function generateAwsSummary(costData: AwsCostResult): SummaryMessage {
 
   if (otherAmount > 0) {
     services.push({
-      name: 'Others',
+      name: "Others",
       amount: formatCurrency(otherAmount, costData.currency),
     });
   }
@@ -42,8 +42,8 @@ export function generateAwsSummary(costData: AwsCostResult): SummaryMessage {
 }
 
 function formatCurrency(amount: number, currency: string): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
     currency: currency,
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,

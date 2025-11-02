@@ -1,5 +1,11 @@
 {
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+
   "files.associations": {
-    "*.vars": "properties",
+    "*.vars": "properties"
   },
+
+  "prettier.enable": true,
+  "oxc.enable": true
 }

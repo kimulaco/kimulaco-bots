@@ -1,11 +1,10 @@
 import {
   CostExplorerClient,
   GetCostAndUsageCommand,
-  GroupDefinition,
-} from '@aws-sdk/client-cost-explorer';
-import type { AwsConfig } from './config';
+} from "@aws-sdk/client-cost-explorer";
+import type { AwsConfig } from "./config";
 
-const DEFAULT_REGION = 'us-east-1';
+const DEFAULT_REGION = "us-east-1";
 
 export interface AwsCostResult {
   total: number;
@@ -21,7 +20,7 @@ export interface AwsCostResult {
 }
 
 export async function getAwsMonthlyCost(
-  config: AwsConfig
+  config: AwsConfig,
 ): Promise<AwsCostResult> {
   const client = new CostExplorerClient({
     credentials: {
@@ -44,12 +43,12 @@ export async function getAwsMonthlyCost(
         Start: startDate,
         End: endDate,
       },
-      Granularity: 'MONTHLY',
-      Metrics: ['UnblendedCost'],
+      Granularity: "MONTHLY",
+      Metrics: ["UnblendedCost"],
       GroupBy: [
         {
-          Type: 'DIMENSION',
-          Key: 'SERVICE',
+          Type: "DIMENSION",
+          Key: "SERVICE",
         },
       ],
     });
@@ -61,25 +60,25 @@ export async function getAwsMonthlyCost(
         Start: startDate,
         End: endDate,
       },
-      Granularity: 'MONTHLY',
-      Metrics: ['UnblendedCost'],
+      Granularity: "MONTHLY",
+      Metrics: ["UnblendedCost"],
     });
 
     const totalResponse = await client.send(totalCommand);
 
     const totalAmount =
       parseFloat(
-        totalResponse.ResultsByTime?.[0]?.Total?.UnblendedCost?.Amount || '0'
+        totalResponse.ResultsByTime?.[0]?.Total?.UnblendedCost?.Amount || "0",
       ) || 0;
     const currency =
-      totalResponse.ResultsByTime?.[0]?.Total?.UnblendedCost?.Unit || 'USD';
+      totalResponse.ResultsByTime?.[0]?.Total?.UnblendedCost?.Unit || "USD";
 
     const services =
       serviceResponse.ResultsByTime?.[0]?.Groups?.map((group) => ({
-        name: group.Keys?.[0] || 'Unknown',
-        amount:
-          parseFloat(group.Metrics?.UnblendedCost?.Amount || '0') || 0,
-      })).filter((service) => service.amount > 0)
+        name: group.Keys?.[0] || "Unknown",
+        amount: parseFloat(group.Metrics?.UnblendedCost?.Amount || "0") || 0,
+      }))
+        .filter((service) => service.amount > 0)
         .sort((a, b) => b.amount - a.amount) || [];
 
     return {
@@ -99,7 +98,7 @@ export async function getAwsMonthlyCost(
 
 function formatDate(date: Date): string {
   const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
 }

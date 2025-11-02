@@ -4,6 +4,15 @@
   "private": true,
   "packageManager": "pnpm@10.20.0",
   "scripts": {
-    "clean": "rm -rf node_modules && pnpm -r exec rm -rf node_modules"
+    "clean": "rm -rf node_modules && pnpm -r exec rm -rf node_modules",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
+    "fmt": "prettier --check .",
+    "fmt:fix": "prettier --write ."
+  },
+  "devDependencies": {
+    "@prettier/plugin-oxc": "0.0.4",
+    "oxlint": "1.25.0",
+    "prettier": "3.6.2"
   }
 }

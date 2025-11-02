@@ -1,7 +1,7 @@
-import { Hono } from 'hono';
-import { cors } from 'hono/cors';
-import command from './routes/command';
-import cron from './routes/cron';
+import { Hono } from "hono";
+import { cors } from "hono/cors";
+import command from "./routes/command";
+import cron from "./routes/cron";
 
 export interface Env {
   DISCORD_PUBLIC_KEY?: string;
@@ -16,9 +16,9 @@ export interface Env {
 
 const app = new Hono<{ Bindings: Env }>();
 
-app.use('*', cors());
+app.use("*", cors());
 
-app.route('/', command);
-app.route('/', cron);
+app.route("/", command);
+app.route("/", cron);
 
 export default app;

@@ -12,7 +12,7 @@ export function createLogger(): Logger {
     error(message: string, error?: Error | unknown): void {
       console.error(`[ERROR] ${message}`, error);
       if (error instanceof Error) {
-        console.error('Stack:', error.stack);
+        console.error("Stack:", error.stack);
       }
     },
     warn(message: string, ...args: unknown[]): void {

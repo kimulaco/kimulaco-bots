@@ -31,5 +31,8 @@ wrangler.toml.local
 # TypeScript
 *.tsbuildinfo
 
+# Linting
+.prettiercache
+
 # AI
-SPEC.md
+docs

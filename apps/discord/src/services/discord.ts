@@ -1,4 +1,4 @@
-import type { SummaryMessage } from './summary';
+import type { SummaryMessage } from "./summary";
 
 export interface DiscordInteractionResponse {
   type: number;
@@ -24,18 +24,20 @@ export interface DiscordInteractionResponse {
 function formatDescription(summary: SummaryMessage): string {
   const serviceList = summary.services
     .map((service) => `- ${service.name}: ${service.amount}`)
-    .join('\n');
+    .join("\n");
 
   return [
     `💰 現在の利用額: ${summary.total} ${summary.currency}`,
-    `🕒 更新日: ${new Date(summary.updatedAt).toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' })}`,
-    '',
-    '📁 主なサービス:',
+    `🕒 更新日: ${new Date(summary.updatedAt).toLocaleString("ja-JP", { timeZone: "Asia/Tokyo" })}`,
+    "",
+    "📁 主なサービス:",
     serviceList,
-  ].join('\n');
+  ].join("\n");
 }
 
-export function formatDiscordMessage(summary: SummaryMessage): DiscordInteractionResponse {
+export function formatDiscordMessage(
+  summary: SummaryMessage,
+): DiscordInteractionResponse {
   const description = formatDescription(summary);
   const timestamp = new Date(summary.updatedAt).toISOString();
 
@@ -54,7 +56,9 @@ export function formatDiscordMessage(summary: SummaryMessage): DiscordInteractio
   };
 }
 
-export function formatErrorMessage(message: string): DiscordInteractionResponse {
+export function formatErrorMessage(
+  message: string,
+): DiscordInteractionResponse {
   return {
     type: 4,
     data: {
@@ -66,7 +70,7 @@ export function formatErrorMessage(message: string): DiscordInteractionResponse 
 export async function sendDiscordMessage(
   botToken: string,
   channelId: string,
-  summary: SummaryMessage
+  summary: SummaryMessage,
 ): Promise<void> {
   const description = formatDescription(summary);
   const timestamp = new Date(summary.updatedAt).toISOString();
@@ -81,15 +85,15 @@ export async function sendDiscordMessage(
   const response = await fetch(
     `https://discord.com/api/v10/channels/${channelId}/messages`,
     {
-      method: 'POST',
+      method: "POST",
       headers: {
         Authorization: `Bot ${botToken}`,
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         embeds: [embed],
       }),
-    }
+    },
   );
 
   const responseText = await response.text();
@@ -103,15 +107,16 @@ export async function sendDiscordMessage(
       errorMessage += ` - ${errorData.message || errorText}`;
 
       if (response.status === 403 && errorData.code === 50001) {
-        errorMessage += '\n\nトラブルシューティング:\n';
-        errorMessage += '1. Botがサーバーに追加されているか確認してください\n';
-        errorMessage += '2. Botがチャンネルにアクセスする権限があるか確認してください\n';
-        errorMessage += '3. Bot Tokenが正しいか確認してください\n';
-        errorMessage += '4. Channel IDが正しいか確認してください';
+        errorMessage += "\n\nトラブルシューティング:\n";
+        errorMessage += "1. Botがサーバーに追加されているか確認してください\n";
+        errorMessage +=
+          "2. Botがチャンネルにアクセスする権限があるか確認してください\n";
+        errorMessage += "3. Bot Tokenが正しいか確認してください\n";
+        errorMessage += "4. Channel IDが正しいか確認してください";
       } else if (response.status === 404) {
-        errorMessage += '\n\nトラブルシューティング:\n';
-        errorMessage += '1. Channel IDが正しいか確認してください\n';
-        errorMessage += '2. Botがチャンネルにアクセスできるか確認してください';
+        errorMessage += "\n\nトラブルシューティング:\n";
+        errorMessage += "1. Channel IDが正しいか確認してください\n";
+        errorMessage += "2. Botがチャンネルにアクセスできるか確認してください";
       }
     } catch {
       errorMessage += ` - ${errorText}`;
@@ -126,12 +131,12 @@ export async function sendDiscordMessage(
       channel_id: string;
       timestamp: string;
     };
-    console.log('Discord message sent successfully', {
+    console.log("Discord message sent successfully", {
       messageId: messageData.id,
       channelId: messageData.channel_id,
       timestamp: messageData.timestamp,
     });
   } catch {
-    console.log('Discord message sent (response parsing failed)');
+    console.log("Discord message sent (response parsing failed)");
   }
 }
