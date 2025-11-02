@@ -1,0 +1,11 @@
+# Discord設定
+DISCORD_PUBLIC_KEY=your_discord_public_key_here
+DISCORD_BOT_TOKEN=your_discord_bot_token_here
+DISCORD_CRON_CHANNEL_ID=your_DISCORD_CRON_CHANNEL_ID_here
+
+# AWS設定
+AWS_ACCESS_KEY_ID=your_aws_access_key_id
+AWS_SECRET_ACCESS_KEY=your_aws_secret_access_key
+
+# Cron認証キー（/bill エンドポイントへのアクセスに使用）
+BILL_API_PRIVATE_KEY=your_bill_api_private_key_here

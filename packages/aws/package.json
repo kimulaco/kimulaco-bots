@@ -1,0 +1,16 @@
+{
+  "name": "@packages/aws",
+  "version": "0.1.0",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "build": "tsc",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@aws-sdk/client-cost-explorer": "3.922.0"
+  },
+  "devDependencies": {
+    "typescript": "catalog:"
+  }
+}

@@ -1,0 +1,12 @@
+name = "kimulaco-discord-bot-dev"
+main = "src/index.ts"
+compatibility_date = "2023-12-01"
+
+[triggers]
+crons = ["0 1 * * 1"]
+
+[env.production]
+name = "kimulaco-discord-bot"
+
+[env.development]
+name = "kimulaco-discord-bot-dev"
