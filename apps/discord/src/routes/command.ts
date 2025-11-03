@@ -1,10 +1,10 @@
 import { Hono } from "hono";
 import type { Env } from "../index";
 import { getAwsMonthlyCost, type AwsConfig } from "@packages/aws";
-import { generateAwsSummary } from "../services/summary";
+import { generateAwsConstSummary } from "../services/summary";
 import { formatDiscordMessage, formatErrorMessage } from "../services/discord";
 import { createLogger } from "../services/logger";
-import { verifyDiscordSignature } from "../utils/verify";
+import { verifyDiscordSignature } from "../utils/verifyDiscordSignature";
 
 const logger = createLogger();
 const command = new Hono<{ Bindings: Env }>();
@@ -116,7 +116,7 @@ command.post("/interaction", async (c) => {
           servicesCount: costData.services.length,
         });
 
-        const summary = generateAwsSummary(costData);
+        const summary = generateAwsConstSummary(costData);
         const response = formatDiscordMessage(summary);
 
         logger.info("Sending Discord response", {

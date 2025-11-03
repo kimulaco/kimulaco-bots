@@ -1,51 +1,51 @@
 import type { AwsCostResult } from "@packages/aws";
+import { formatCurrency } from "../utils/formatCurrency";
+
+export interface SummaryService {
+  name: string;
+  amount: string;
+}
 
 export interface SummaryMessage {
   title: string;
   total: string;
   currency: string;
   updatedAt: string;
-  services: Array<{ name: string; amount: string }>;
+  services: SummaryService[];
 }
 
-export function generateAwsSummary(costData: AwsCostResult): SummaryMessage {
-  const now = new Date();
+export function generateAwsConstSummary(
+  awsCostResult: AwsCostResult,
+  referenceDate?: Date,
+): SummaryMessage {
+  const now = referenceDate ?? new Date();
   const updatedAt = now.toISOString();
-  const periodDate = new Date(costData.period.start);
+  const periodDate = new Date(awsCostResult.period.start);
   const year = periodDate.getFullYear();
   const month = periodDate.getMonth() + 1;
   const periodLabel = `${year}年${month}月`;
-  const topServices = costData.services.slice(0, 5);
+  const topServices = awsCostResult.services.slice(0, 5);
   const otherAmount =
-    costData.total -
+    awsCostResult.total -
     topServices.reduce((sum, service) => sum + service.amount, 0);
 
   const services = topServices.map((service) => ({
     name: service.name,
-    amount: formatCurrency(service.amount, costData.currency),
+    amount: formatCurrency(service.amount, awsCostResult.currency),
   }));
 
   if (otherAmount > 0) {
     services.push({
       name: "Others",
-      amount: formatCurrency(otherAmount, costData.currency),
+      amount: formatCurrency(otherAmount, awsCostResult.currency),
     });
   }
 
   return {
     title: `AWS 利用料金サマリー (${periodLabel})`,
-    total: formatCurrency(costData.total, costData.currency),
-    currency: costData.currency,
+    total: formatCurrency(awsCostResult.total, awsCostResult.currency),
+    currency: awsCostResult.currency,
     updatedAt,
     services,
   };
-}
-
-function formatCurrency(amount: number, currency: string): string {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: currency,
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(amount);
 }

@@ -34,5 +34,8 @@ wrangler.toml.local
 # Linting
 .prettiercache
 
+# Testing
+coverage
+
 # AI
 docs

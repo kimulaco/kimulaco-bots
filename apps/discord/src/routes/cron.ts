@@ -1,8 +1,8 @@
 import { Hono } from "hono";
 import type { Env } from "../index";
 import { getAwsMonthlyCost, type AwsConfig } from "@packages/aws";
-import { generateAwsSummary } from "../services/summary";
-import { sendDiscordMessage } from "../services/discord";
+import { generateAwsConstSummary } from "../services/summary";
+import { sendSummaryDiscordMessage } from "../services/discord";
 import { createLogger } from "../services/logger";
 
 const logger = createLogger();
@@ -192,14 +192,14 @@ cron.post("/bill", async (c) => {
       servicesCount: costData.services.length,
     });
 
-    const summary = generateAwsSummary(costData);
+    const summary = generateAwsConstSummary(costData);
 
     logger.info("Sending Discord message...", {
       channelId: env.DISCORD_CRON_CHANNEL_ID,
       summaryTitle: summary.title,
     });
 
-    await sendDiscordMessage(
+    await sendSummaryDiscordMessage(
       env.DISCORD_BOT_TOKEN,
       env.DISCORD_CRON_CHANNEL_ID,
       summary,

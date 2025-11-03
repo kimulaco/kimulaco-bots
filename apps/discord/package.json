@@ -11,7 +11,9 @@
     "lint:fix": "oxlint --fix",
     "fmt": "prettier --check .",
     "fmt:fix": "prettier --write .",
-    "register-command": "tsx scripts/register-command.ts"
+    "register-command": "tsx scripts/register-command.ts",
+    "test": "vitest run",
+    "test:ui": "vitest --ui"
   },
   "dependencies": {
     "@packages/aws": "workspace:*",
@@ -20,7 +22,7 @@
   },
   "devDependencies": {
     "@cloudflare/workers-types": "4.20251014.0",
-    "@types/node": "24.9.2",
+    "@types/node": "catalog:",
     "tsx": "4.20.6",
     "typescript": "catalog:",
     "wrangler": "4.45.3"

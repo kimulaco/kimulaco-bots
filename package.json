@@ -8,11 +8,17 @@
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
     "fmt": "prettier --check .",
-    "fmt:fix": "prettier --write ."
+    "fmt:fix": "prettier --write .",
+    "test": "vitest run",
+    "test:ui": "vitest --ui",
+    "test:cov": "vitest run --coverage"
   },
   "devDependencies": {
-    "@prettier/plugin-oxc": "0.0.4",
-    "oxlint": "1.25.0",
-    "prettier": "3.6.2"
+    "@prettier/plugin-oxc": "catalog:",
+    "@vitest/ui": "catalog:",
+    "@vitest/coverage-v8": "catalog:",
+    "oxlint": "catalog:",
+    "prettier": "catalog:",
+    "vitest": "catalog:"
   }
 }

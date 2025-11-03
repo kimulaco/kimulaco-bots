@@ -1,27 +1,16 @@
 import type { SummaryMessage } from "./summary";
+import {
+  sendDiscordMessage,
+  type DiscordMessagePayload,
+  type SendDiscordMessageOptions,
+} from "../utils/sendDiscordMessage";
 
 export interface DiscordInteractionResponse {
   type: number;
-  data?: {
-    content?: string;
-    embeds?: Array<{
-      title?: string;
-      description?: string;
-      color?: number;
-      fields?: Array<{
-        name: string;
-        value: string;
-        inline?: boolean;
-      }>;
-      timestamp?: string;
-      footer?: {
-        text?: string;
-      };
-    }>;
-  };
+  data?: DiscordMessagePayload;
 }
 
-function formatDescription(summary: SummaryMessage): string {
+export function formatDescription(summary: SummaryMessage): string {
   const serviceList = summary.services
     .map((service) => `- ${service.name}: ${service.amount}`)
     .join("\n");
@@ -67,14 +56,14 @@ export function formatErrorMessage(
   };
 }
 
-export async function sendDiscordMessage(
+export async function sendSummaryDiscordMessage(
   botToken: string,
   channelId: string,
   summary: SummaryMessage,
+  options?: SendDiscordMessageOptions,
 ): Promise<void> {
   const description = formatDescription(summary);
   const timestamp = new Date(summary.updatedAt).toISOString();
-
   const embed = {
     title: summary.title,
     description,
@@ -82,61 +71,12 @@ export async function sendDiscordMessage(
     timestamp: timestamp,
   };
 
-  const response = await fetch(
-    `https://discord.com/api/v10/channels/${channelId}/messages`,
+  await sendDiscordMessage(
+    botToken,
+    channelId,
     {
-      method: "POST",
-      headers: {
-        Authorization: `Bot ${botToken}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        embeds: [embed],
-      }),
+      embeds: [embed],
     },
+    options,
   );
-
-  const responseText = await response.text();
-
-  if (!response.ok) {
-    const errorText = responseText;
-    let errorMessage = `Failed to send Discord message: ${response.status} ${response.statusText}`;
-
-    try {
-      const errorData = JSON.parse(errorText);
-      errorMessage += ` - ${errorData.message || errorText}`;
-
-      if (response.status === 403 && errorData.code === 50001) {
-        errorMessage += "\n\nトラブルシューティング:\n";
-        errorMessage += "1. Botがサーバーに追加されているか確認してください\n";
-        errorMessage +=
-          "2. Botがチャンネルにアクセスする権限があるか確認してください\n";
-        errorMessage += "3. Bot Tokenが正しいか確認してください\n";
-        errorMessage += "4. Channel IDが正しいか確認してください";
-      } else if (response.status === 404) {
-        errorMessage += "\n\nトラブルシューティング:\n";
-        errorMessage += "1. Channel IDが正しいか確認してください\n";
-        errorMessage += "2. Botがチャンネルにアクセスできるか確認してください";
-      }
-    } catch {
-      errorMessage += ` - ${errorText}`;
-    }
-
-    throw new Error(errorMessage);
-  }
-
-  try {
-    const messageData = JSON.parse(responseText) as {
-      id: string;
-      channel_id: string;
-      timestamp: string;
-    };
-    console.log("Discord message sent successfully", {
-      messageId: messageData.id,
-      channelId: messageData.channel_id,
-      timestamp: messageData.timestamp,
-    });
-  } catch {
-    console.log("Discord message sent (response parsing failed)");
-  }
 }
