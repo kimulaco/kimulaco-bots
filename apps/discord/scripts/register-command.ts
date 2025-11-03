@@ -1,5 +1,5 @@
 /**
- * DISCORD_TOKEN=xxx CLIENT_ID=xxx [GUILD_ID=xxx] pnpm tsx scripts/register-command.ts
+ * DISCORD_TOKEN=xxx CLIENT_ID=xxx DISCORD_COMMAND_NAME=xxx [GUILD_ID=xxx] pnpm tsx scripts/register-command.ts
  */
 
 interface Command {
@@ -27,52 +27,55 @@ interface Command {
   }[];
 }
 
-const command: Command = {
-  name: "herta-dev",
-  description: "Herta開発用のコマンド",
-  options: [
-    {
-      type: 1,
-      name: "bill",
-      description: "クラウドサービスの月額利用料金を取得します",
-      options: [
-        {
-          type: 3,
-          name: "service",
-          description: "クラウドサービスを選択してください",
-          required: true,
-          choices: [
-            {
-              name: "AWS",
-              value: "aws",
-            },
-            // {
-            //   name: 'Google Cloud',
-            //   value: 'gcp',
-            // },
-            // {
-            //   name: 'Cloudflare',
-            //   value: 'cf',
-            // },
-          ],
-        },
-      ],
-    },
-  ],
-};
-
 async function registerCommand() {
   const token = process.env.DISCORD_TOKEN;
   const clientId = process.env.CLIENT_ID;
   const guildId = process.env.GUILD_ID;
+  const commandName = process.env.DISCORD_COMMAND_NAME;
 
-  if (!token || !clientId) {
-    console.error("Error: DISCORD_TOKEN と CLIENT_ID 環境変数が必要です。");
+  if (!token || !clientId || !commandName) {
     console.error(
-      "使用方法: DISCORD_TOKEN=xxx CLIENT_ID=xxx [GUILD_ID=xxx] pnpm tsx scripts/register-command.ts",
+      "Error: DISCORD_TOKEN、CLIENT_ID、DISCORD_COMMAND_NAME 環境変数が必要です。",
+    );
+    console.error(
+      "使用方法: DISCORD_TOKEN=xxx CLIENT_ID=xxx DISCORD_COMMAND_NAME=xxx [GUILD_ID=xxx] pnpm tsx scripts/register-command.ts",
     );
     process.exit(1);
   }
+
+  const command: Command = {
+    name: commandName,
+    description: "",
+    options: [
+      {
+        type: 1,
+        name: "bill",
+        description: "サービスの月額利用料金を取得します",
+        options: [
+          {
+            type: 3,
+            name: "service",
+            description: "サービスを選択してください",
+            required: true,
+            choices: [
+              {
+                name: "AWS",
+                value: "aws",
+              },
+              // {
+              //   name: 'Google Cloud',
+              //   value: 'gcp',
+              // },
+              // {
+              //   name: 'Cloudflare',
+              //   value: 'cf',
+              // },
+            ],
+          },
+        ],
+      },
+    ],
+  };
 
   const url = guildId
     ? `https://discord.com/api/v10/applications/${clientId}/guilds/${guildId}/commands`

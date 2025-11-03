@@ -1,7 +1,8 @@
 # Discord設定
 DISCORD_PUBLIC_KEY=your_discord_public_key_here
 DISCORD_BOT_TOKEN=your_discord_bot_token_here
-DISCORD_CRON_CHANNEL_ID=your_DISCORD_CRON_CHANNEL_ID_here
+DISCORD_CRON_CHANNEL_ID=your_iscord_cron_channel_id_here
+DISCORD_COMMAND_NAME=your_discord_command_name_here
 
 # AWS設定
 AWS_ACCESS_KEY_ID=your_aws_access_key_id

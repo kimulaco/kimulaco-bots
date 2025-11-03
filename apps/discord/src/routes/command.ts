@@ -76,8 +76,19 @@ command.post("/interaction", async (c) => {
     });
 
     try {
+      if (!env.DISCORD_COMMAND_NAME) {
+        logger.error("DISCORD_COMMAND_NAME is not configured");
+        return c.json(
+          formatErrorMessage(
+            "サーバー設定エラー: コマンド名が設定されていません。",
+          ),
+          200,
+        );
+      }
+
+      const expectedCommandName = env.DISCORD_COMMAND_NAME;
       if (
-        (commandName === "herta-dev" &&
+        (commandName === expectedCommandName &&
           subcommandName === "bill" &&
           serviceOption === "aws") ||
         (commandName === "bill" && serviceOption === "aws")
