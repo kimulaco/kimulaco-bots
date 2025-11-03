@@ -3,7 +3,7 @@ import {
   sendDiscordMessage,
   type DiscordMessagePayload,
   type SendDiscordMessageOptions,
-} from "../utils/sendDiscordMessage";
+} from "@packages/discord";
 
 export interface DiscordInteractionResponse {
   type: number;

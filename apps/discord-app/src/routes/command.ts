@@ -4,7 +4,7 @@ import { getAwsMonthlyCost, type AwsConfig } from "@packages/aws";
 import { generateAwsConstSummary } from "../services/summary";
 import { formatDiscordMessage, formatErrorMessage } from "../services/discord";
 import { createLogger } from "../services/logger";
-import { verifyDiscordSignature } from "../utils/verifyDiscordSignature";
+import { verifyDiscordSignature } from "@packages/discord";
 
 const logger = createLogger();
 const command = new Hono<{ Bindings: Env }>();

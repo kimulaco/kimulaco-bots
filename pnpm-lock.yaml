@@ -59,6 +59,9 @@ importers:
       '@packages/aws':
         specifier: workspace:*
         version: link:../../packages/aws
+      '@packages/discord':
+        specifier: workspace:*
+        version: link:../../packages/discord
       hono:
         specifier: 4.10.4
         version: 4.10.4
@@ -87,6 +90,12 @@ importers:
       '@aws-sdk/client-cost-explorer':
         specifier: 3.922.0
         version: 3.922.0
+    devDependencies:
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
+
+  packages/discord:
     devDependencies:
       typescript:
         specifier: 'catalog:'

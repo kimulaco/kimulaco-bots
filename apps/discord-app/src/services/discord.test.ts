@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import { createDiscordMessageUrl } from "@packages/discord";
 import {
   formatDiscordMessage,
   formatErrorMessage,
@@ -6,7 +7,6 @@ import {
   sendSummaryDiscordMessage,
 } from "./discord";
 import type { SummaryMessage } from "./summary";
-import { createDiscordMessageUrl } from "../utils/sendDiscordMessage";
 
 describe("formatDescription()", () => {
   it("should generate a description from a summary message", () => {

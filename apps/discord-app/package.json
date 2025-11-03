@@ -1,5 +1,5 @@
 {
-  "name": "kimulaco-bots/discord",
+  "name": "kimulaco-bots/discord-app",
   "version": "0.1.0",
   "type": "module",
   "scripts": {
@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@packages/aws": "workspace:*",
+    "@packages/discord": "workspace:*",
     "hono": "4.10.4",
     "tweetnacl": "1.0.3"
   },

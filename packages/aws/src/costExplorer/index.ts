@@ -5,6 +5,9 @@ import {
 import type { AwsConfig } from "../config";
 import { formatDate } from "./utils/formatDate";
 
+export * from "./utils/formatCurrency";
+export * from "./utils/formatDate";
+
 const DEFAULT_REGION = "us-east-1";
 
 export interface AwsCostService {

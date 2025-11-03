@@ -1,5 +1,5 @@
 import type { AwsCostResult } from "@packages/aws";
-import { formatCurrency } from "../utils/formatCurrency";
+import { formatCurrency } from "@packages/aws";
 
 export interface SummaryService {
   name: string;

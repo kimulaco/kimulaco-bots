@@ -12,7 +12,7 @@ build/
 .env
 .env.local
 .env.*.local
-apps/discord/.dev.vars
+.dev.vars
 
 # OS
 .DS_Store
