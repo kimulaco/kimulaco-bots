@@ -1,6 +1,6 @@
 import nacl from "tweetnacl";
 import { hexToUint8Array } from "./hexToUint8Array";
-import { DISCORD_HEADERS } from "../constants/verify";
+import { DISCORD_VERIFY_HEADERS } from "../constants/api";
 
 export const verifyDiscordSignature = async (
   request: Request,
@@ -13,8 +13,8 @@ export const verifyDiscordSignature = async (
     return false;
   }
 
-  const signature = request.headers.get(DISCORD_HEADERS.SIGNATURE);
-  const timestamp = request.headers.get(DISCORD_HEADERS.TIMESTAMP);
+  const signature = request.headers.get(DISCORD_VERIFY_HEADERS.SIGNATURE);
+  const timestamp = request.headers.get(DISCORD_VERIFY_HEADERS.TIMESTAMP);
 
   if (!signature || !timestamp) {
     console.warn("Missing Discord signature headers - skipping verification", {

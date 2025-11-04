@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { createDiscordMessageUrl } from "@packages/discord";
+import { createDiscordMessageApiUrl } from "@packages/discord";
 import {
   formatDiscordMessage,
   formatErrorMessage,
@@ -136,7 +136,7 @@ describe("sendSummaryDiscordMessage()", () => {
 
     expect(mockFetch).toHaveBeenCalledTimes(1);
     expect(mockFetch).toHaveBeenCalledWith(
-      createDiscordMessageUrl("test-channel"),
+      createDiscordMessageApiUrl("test-channel"),
       expect.objectContaining({
         method: "POST",
         headers: {

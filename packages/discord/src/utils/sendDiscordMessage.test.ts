@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import {
   sendDiscordMessage,
-  createDiscordMessageUrl,
+  createDiscordMessageApiUrl,
   type DiscordMessagePayload,
   type DiscordEmbed,
 } from "./sendDiscordMessage";
@@ -33,7 +33,7 @@ describe("sendDiscordMessage()", () => {
 
     expect(mockFetch).toHaveBeenCalledTimes(1);
     expect(mockFetch).toHaveBeenCalledWith(
-      createDiscordMessageUrl("test-channel"),
+      createDiscordMessageApiUrl("test-channel"),
       expect.objectContaining({
         method: "POST",
         headers: {
@@ -74,7 +74,7 @@ describe("sendDiscordMessage()", () => {
 
     expect(mockFetch).toHaveBeenCalledTimes(1);
     expect(mockFetch).toHaveBeenCalledWith(
-      createDiscordMessageUrl("test-channel"),
+      createDiscordMessageApiUrl("test-channel"),
       expect.objectContaining({
         method: "POST",
         headers: {
@@ -115,7 +115,7 @@ describe("sendDiscordMessage()", () => {
 
     expect(mockFetch).toHaveBeenCalledTimes(1);
     const callArgs = mockFetch.mock.calls[0];
-    expect(callArgs[0]).toBe(createDiscordMessageUrl("test-channel"));
+    expect(callArgs[0]).toBe(createDiscordMessageApiUrl("test-channel"));
     expect(JSON.parse(callArgs[1].body as string)).toEqual(message);
   });
 
@@ -320,7 +320,7 @@ describe("sendDiscordMessage()", () => {
     });
 
     expect(mockFetch).toHaveBeenCalledWith(
-      createDiscordMessageUrl(channelId),
+      createDiscordMessageApiUrl(channelId),
       expect.objectContaining({
         method: "POST",
         headers: {

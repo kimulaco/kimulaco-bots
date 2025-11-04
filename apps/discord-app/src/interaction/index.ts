@@ -1,15 +1,15 @@
 import { Hono } from "hono";
-import type { Env } from "../index";
 import { getAwsMonthlyCost, type AwsConfig } from "@packages/aws";
+import { verifyDiscordSignature } from "@packages/discord";
 import { generateAwsConstSummary } from "../services/summary";
 import { formatDiscordMessage, formatErrorMessage } from "../services/discord";
 import { createLogger } from "../services/logger";
-import { verifyDiscordSignature } from "@packages/discord";
+import type { Env } from "../type";
 
 const logger = createLogger();
-const command = new Hono<{ Bindings: Env }>();
+const api = new Hono<{ Bindings: Env }>();
 
-command.post("/interaction", async (c) => {
+api.post("/", async (c) => {
   const env = c.env;
   const request = c.req.raw;
 
@@ -151,4 +151,4 @@ command.post("/interaction", async (c) => {
   return c.json({ error: "Invalid request", receivedType: body.type }, 400);
 });
 
-export default command;
+export default api;

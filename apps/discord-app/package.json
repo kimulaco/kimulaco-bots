@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "wrangler dev",
+    "dev:scheduled": "wrangler dev --test-scheduled",
     "deploy:dev": "wrangler deploy",
     "deploy:prod": "wrangler deploy --env production",
     "type-check": "tsc --noEmit",

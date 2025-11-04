@@ -3,10 +3,11 @@ main = "src/index.ts"
 compatibility_date = "2023-12-01"
 
 [triggers]
-crons = ["0 1 * * 1"]
+crons = ["0 1 * * *"] # 毎日 日本時間10時に実行
 
 [env.production]
 name = "kimulaco-discord-bot"
+workers_dev = false
 
 [env.development]
 name = "kimulaco-discord-bot-dev"

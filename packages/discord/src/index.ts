@@ -1,3 +1,5 @@
+export * from "./utils/getDiscordBotInfo";
+export * from "./utils/getDiscordChannelInfo";
 export * from "./utils/hexToUint8Array";
-export * from "./utils/verifyDiscordSignature";
 export * from "./utils/sendDiscordMessage";
+export * from "./utils/verifyDiscordSignature";

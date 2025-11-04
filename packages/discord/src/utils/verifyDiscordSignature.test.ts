@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import nacl from "tweetnacl";
 import { verifyDiscordSignature } from "./verifyDiscordSignature";
-import { DISCORD_HEADERS } from "../constants/verify";
+import { DISCORD_VERIFY_HEADERS } from "../constants/api";
 import * as hexToUint8ArrayModule from "./hexToUint8Array";
 
 const TEST_BASE_URL = "https://test.invalid";
@@ -25,8 +25,8 @@ describe("verifyDiscordSignature()", () => {
     const request = new Request(TEST_BASE_URL, {
       method: "POST",
       headers: {
-        [DISCORD_HEADERS.SIGNATURE]: signature,
-        [DISCORD_HEADERS.TIMESTAMP]: timestamp,
+        [DISCORD_VERIFY_HEADERS.SIGNATURE]: signature,
+        [DISCORD_VERIFY_HEADERS.TIMESTAMP]: timestamp,
       },
       body,
     });
@@ -56,8 +56,8 @@ describe("verifyDiscordSignature()", () => {
     const request = new Request(TEST_BASE_URL, {
       method: "POST",
       headers: {
-        [DISCORD_HEADERS.SIGNATURE]: signature,
-        [DISCORD_HEADERS.TIMESTAMP]: timestamp,
+        [DISCORD_VERIFY_HEADERS.SIGNATURE]: signature,
+        [DISCORD_VERIFY_HEADERS.TIMESTAMP]: timestamp,
       },
       body,
     });
@@ -81,8 +81,8 @@ describe("verifyDiscordSignature()", () => {
     const request = new Request(TEST_BASE_URL, {
       method: "POST",
       headers: {
-        [DISCORD_HEADERS.SIGNATURE]: invalidSignature,
-        [DISCORD_HEADERS.TIMESTAMP]: timestamp,
+        [DISCORD_VERIFY_HEADERS.SIGNATURE]: invalidSignature,
+        [DISCORD_VERIFY_HEADERS.TIMESTAMP]: timestamp,
       },
       body,
     });
@@ -127,7 +127,7 @@ describe("verifyDiscordSignature()", () => {
     const request = new Request(TEST_BASE_URL, {
       method: "POST",
       headers: {
-        [DISCORD_HEADERS.TIMESTAMP]: "1234567890",
+        [DISCORD_VERIFY_HEADERS.TIMESTAMP]: "1234567890",
       },
     });
 
@@ -141,7 +141,7 @@ describe("verifyDiscordSignature()", () => {
     const request = new Request(TEST_BASE_URL, {
       method: "POST",
       headers: {
-        [DISCORD_HEADERS.SIGNATURE]: "a".repeat(128),
+        [DISCORD_VERIFY_HEADERS.SIGNATURE]: "a".repeat(128),
       },
     });
 
@@ -157,8 +157,8 @@ describe("verifyDiscordSignature()", () => {
     const request = new Request(TEST_BASE_URL, {
       method: "POST",
       headers: {
-        [DISCORD_HEADERS.SIGNATURE]: invalidSignature,
-        [DISCORD_HEADERS.TIMESTAMP]: "1234567890",
+        [DISCORD_VERIFY_HEADERS.SIGNATURE]: invalidSignature,
+        [DISCORD_VERIFY_HEADERS.TIMESTAMP]: "1234567890",
       },
       body: '{"type":1}',
     });
@@ -174,8 +174,8 @@ describe("verifyDiscordSignature()", () => {
     const request = new Request(TEST_BASE_URL, {
       method: "POST",
       headers: {
-        [DISCORD_HEADERS.SIGNATURE]: "a".repeat(128),
-        [DISCORD_HEADERS.TIMESTAMP]: "1234567890",
+        [DISCORD_VERIFY_HEADERS.SIGNATURE]: "a".repeat(128),
+        [DISCORD_VERIFY_HEADERS.TIMESTAMP]: "1234567890",
       },
       body: '{"type":1}',
     });
@@ -191,8 +191,8 @@ describe("verifyDiscordSignature()", () => {
     const request = new Request(TEST_BASE_URL, {
       method: "POST",
       headers: {
-        [DISCORD_HEADERS.SIGNATURE]: "invalid".repeat(20),
-        [DISCORD_HEADERS.TIMESTAMP]: "1234567890",
+        [DISCORD_VERIFY_HEADERS.SIGNATURE]: "invalid".repeat(20),
+        [DISCORD_VERIFY_HEADERS.TIMESTAMP]: "1234567890",
       },
     });
 
@@ -212,8 +212,8 @@ describe("verifyDiscordSignature()", () => {
     const request = new Request(TEST_BASE_URL, {
       method: "POST",
       headers: {
-        [DISCORD_HEADERS.SIGNATURE]: signature,
-        [DISCORD_HEADERS.TIMESTAMP]: "1234567890",
+        [DISCORD_VERIFY_HEADERS.SIGNATURE]: signature,
+        [DISCORD_VERIFY_HEADERS.TIMESTAMP]: "1234567890",
       },
       body: '{"type":1}',
     });
@@ -234,8 +234,8 @@ describe("verifyDiscordSignature()", () => {
     const request = new Request(TEST_BASE_URL, {
       method: "POST",
       headers: {
-        [DISCORD_HEADERS.SIGNATURE]: signature,
-        [DISCORD_HEADERS.TIMESTAMP]: "1234567890",
+        [DISCORD_VERIFY_HEADERS.SIGNATURE]: signature,
+        [DISCORD_VERIFY_HEADERS.TIMESTAMP]: "1234567890",
       },
       body: '{"type":1}',
     });
@@ -252,8 +252,8 @@ describe("verifyDiscordSignature()", () => {
     const request = new Request(TEST_BASE_URL, {
       method: "POST",
       headers: {
-        [DISCORD_HEADERS.SIGNATURE]: signature,
-        [DISCORD_HEADERS.TIMESTAMP]: "1234567890",
+        [DISCORD_VERIFY_HEADERS.SIGNATURE]: signature,
+        [DISCORD_VERIFY_HEADERS.TIMESTAMP]: "1234567890",
       },
       body: '{"type":1}',
     });
@@ -274,8 +274,8 @@ describe("verifyDiscordSignature()", () => {
     const originalRequest = new Request(TEST_BASE_URL, {
       method: "POST",
       headers: {
-        [DISCORD_HEADERS.SIGNATURE]: signature,
-        [DISCORD_HEADERS.TIMESTAMP]: "1234567890",
+        [DISCORD_VERIFY_HEADERS.SIGNATURE]: signature,
+        [DISCORD_VERIFY_HEADERS.TIMESTAMP]: "1234567890",
       },
       body: '{"type":1}',
     });
@@ -301,8 +301,8 @@ describe("verifyDiscordSignature()", () => {
     const request = new Request(TEST_BASE_URL, {
       method: "POST",
       headers: {
-        [DISCORD_HEADERS.SIGNATURE]: signature,
-        [DISCORD_HEADERS.TIMESTAMP]: "1234567890",
+        [DISCORD_VERIFY_HEADERS.SIGNATURE]: signature,
+        [DISCORD_VERIFY_HEADERS.TIMESTAMP]: "1234567890",
       },
       body: '{"type":1}',
     });

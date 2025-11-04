@@ -1,3 +1,5 @@
+import { DISCORD_API_BASE_URL } from "../constants/api";
+
 export interface DiscordEmbedField {
   name: string;
   value: string;
@@ -26,8 +28,8 @@ export interface SendDiscordMessageOptions {
   fetchFn?: typeof fetch;
 }
 
-export const createDiscordMessageUrl = (channelId: string): string => {
-  return `https://discord.com/api/v10/channels/${channelId}/messages`;
+export const createDiscordMessageApiUrl = (channelId: string): string => {
+  return `${DISCORD_API_BASE_URL}/api/v10/channels/${channelId}/messages`;
 };
 
 export const sendDiscordMessage = async (
@@ -38,7 +40,7 @@ export const sendDiscordMessage = async (
 ): Promise<void> => {
   const fetchFn = options?.fetchFn ?? fetch;
 
-  const response = await fetchFn(createDiscordMessageUrl(channelId), {
+  const response = await fetchFn(createDiscordMessageApiUrl(channelId), {
     method: "POST",
     headers: {
       Authorization: `Bot ${botToken}`,
