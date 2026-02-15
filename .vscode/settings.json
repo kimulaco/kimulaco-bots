@@ -1,11 +1,13 @@
 {
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.defaultFormatter": "oxc.oxc-vscode",
   "editor.formatOnSave": true,
 
   "files.associations": {
     "*.vars": "properties"
   },
 
-  "prettier.enable": true,
-  "oxc.enable": true
+  "oxc.enable": true,
+  "oxc.enable.oxlint": true,
+  "oxc.enable.oxfmt": true,
+  "oxc.fmt.configPath": ".oxfmtrc.json"
 }

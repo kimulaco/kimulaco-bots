@@ -2,23 +2,22 @@
   "name": "kimulaco-bots",
   "version": "0.0.0",
   "private": true,
-  "packageManager": "pnpm@10.29.3",
   "scripts": {
     "clean": "rm -rf node_modules && pnpm -r exec rm -rf node_modules",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
-    "fmt": "prettier --check .",
-    "fmt:fix": "prettier --write .",
+    "fmt": "oxfmt --check .",
+    "fmt:fix": "oxfmt --write .",
     "test": "vitest run",
     "test:ui": "vitest --ui",
     "test:cov": "vitest run --coverage"
   },
   "devDependencies": {
-    "@prettier/plugin-oxc": "catalog:",
-    "@vitest/ui": "catalog:",
     "@vitest/coverage-v8": "catalog:",
+    "@vitest/ui": "catalog:",
+    "oxfmt": "catalog:",
     "oxlint": "catalog:",
-    "prettier": "catalog:",
     "vitest": "catalog:"
-  }
+  },
+  "packageManager": "pnpm@10.29.3"
 }

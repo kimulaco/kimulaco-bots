@@ -1,8 +1,8 @@
 node_modules
 dist
+coverage
 build
 .wrangler
 pnpm-lock.yaml
 *.tsbuildinfo
 docs
-

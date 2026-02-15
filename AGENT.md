@@ -8,15 +8,15 @@ Discord Bot for notifying AWS/GCP/Cloudflare monthly billing via commands and sc
 
 ### Tech Stack
 
-| Item            | Technology                      |
-| --------------- | ------------------------------- |
-| Runtime         | Cloudflare Workers              |
-| Framework       | Hono (TypeScript)               |
-| Package Manager | pnpm workspace (monorepo)       |
-| Test            | Vitest                          |
-| Linter          | oxlint                          |
-| Formatter       | Prettier + @prettier/plugin-oxc |
-| Node.js         | 24.11.0                         |
+| Item            | Technology                |
+| --------------- | ------------------------- |
+| Runtime         | Cloudflare Workers        |
+| Framework       | Hono (TypeScript)         |
+| Package Manager | pnpm workspace (monorepo) |
+| Test            | Vitest                    |
+| Linter          | oxlint                    |
+| Formatter       | oxfmt                     |
+| Node.js         | 24.13.1                   |
 
 ## Directory Structure
 
@@ -149,11 +149,13 @@ BILL_API_PRIVATE_KEY        # Health endpoint auth
 Dependencies with postinstall scripts are ignored by default (`ignoredBuiltDependencies` in `pnpm-workspace.yaml`).
 
 **Decision criteria:**
+
 - Modern packages (esbuild, workerd, sharp) distribute platform-specific binaries via `optionalDependencies`
 - postinstall scripts are for validation/optimization only, not required for functionality
 - Ignoring build scripts improves security (supply chain attack mitigation) and install speed
 
 **Only allow build scripts when:**
+
 - Package explicitly requires postinstall to function (rare)
 - Documented evidence that optionalDependencies alone is insufficient
 

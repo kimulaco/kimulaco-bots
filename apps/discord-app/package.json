@@ -11,8 +11,8 @@
     "type-check": "tsc --noEmit",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
-    "fmt": "prettier --check .",
-    "fmt:fix": "prettier --write .",
+    "fmt": "oxfmt --check .",
+    "fmt:fix": "oxfmt --write .",
     "register-command": "tsx scripts/register-command.ts",
     "test": "vitest run",
     "test:ui": "vitest --ui"
