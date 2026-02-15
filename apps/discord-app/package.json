@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "wrangler dev",
     "dev:scheduled": "wrangler dev --test-scheduled",
-    "deploy:dev": "wrangler deploy",
+    "deploy:dev": "wrangler deploy --env development",
     "deploy:prod": "wrangler deploy --env production",
     "type-check": "tsc --noEmit",
     "lint": "oxlint",
