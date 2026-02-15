@@ -18,7 +18,7 @@ const scheduled: ExportedHandlerScheduledHandler<Env> = async (
   ctx,
 ) => {
   switch (event.cron) {
-    case "0 1 * * *":
+    case "0 1 * * 1":
       ctx.waitUntil(sendServiceCostSummaryToDiscord(env));
       break;
     default:
