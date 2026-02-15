@@ -1,14 +1,10 @@
 import type { SummaryMessage } from "./summary";
 import {
   sendDiscordMessage,
-  type DiscordMessagePayload,
+  InteractionResponseType,
   type SendDiscordMessageOptions,
+  type DiscordInteractionResponse,
 } from "@packages/discord";
-
-export interface DiscordInteractionResponse {
-  type: number;
-  data?: DiscordMessagePayload;
-}
 
 export function formatDescription(summary: SummaryMessage): string {
   const serviceList = summary.services
@@ -31,7 +27,7 @@ export function formatDiscordMessage(
   const timestamp = new Date(summary.updatedAt).toISOString();
 
   return {
-    type: 4,
+    type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
     data: {
       embeds: [
         {
@@ -49,7 +45,7 @@ export function formatErrorMessage(
   message: string,
 ): DiscordInteractionResponse {
   return {
-    type: 4,
+    type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
     data: {
       content: `❌ エラー: ${message}`,
     },

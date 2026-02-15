@@ -1,6 +1,13 @@
 import { Hono } from "hono";
 import { getAwsMonthlyCost, type AwsConfig } from "@packages/aws";
-import { verifyDiscordSignature } from "@packages/discord";
+import {
+  verifyDiscordSignature,
+  InteractionType,
+  InteractionResponseType,
+  ApplicationCommandOptionType,
+  type DiscordInteraction,
+  type DiscordInteractionResponse,
+} from "@packages/discord";
 import { generateAwsConstSummary } from "../services/summary";
 import { formatDiscordMessage, formatErrorMessage } from "../services/discord";
 import { createLogger } from "../services/logger";
@@ -33,18 +40,7 @@ api.post("/", async (c) => {
     );
   }
 
-  const body = (await request.json()) as {
-    type?: number;
-    data?: {
-      name?: string;
-      options?: Array<{
-        name?: string;
-        value?: string;
-        type?: number;
-        options?: Array<{ name?: string; value?: string }>;
-      }>;
-    };
-  };
+  const body = (await request.json()) as DiscordInteraction;
 
   logger.info("Received interaction request", {
     type: body.type,
@@ -55,17 +51,20 @@ api.post("/", async (c) => {
       body.data?.options?.[0]?.value,
   });
 
-  if (body.type === 1) {
+  if (body.type === InteractionType.PING) {
     logger.info("Responding to PING");
-    return c.json({ type: 1 });
+    const response: DiscordInteractionResponse = {
+      type: InteractionResponseType.PONG,
+    };
+    return c.json(response);
   }
 
-  if (body.type === 2) {
+  if (body.type === InteractionType.APPLICATION_COMMAND) {
     const commandName = body.data?.name;
     const subcommand = body.data?.options?.[0];
     const subcommandName = subcommand?.name;
     const serviceOption =
-      subcommand?.type === 1
+      subcommand?.type === ApplicationCommandOptionType.SUB_COMMAND
         ? subcommand.options?.[0]?.value
         : subcommand?.value;
 
@@ -90,12 +89,13 @@ api.post("/", async (c) => {
       const expectedCommandName = env.DISCORD_COMMAND_NAME;
       if (commandName === expectedCommandName && subcommandName === "version") {
         logger.info("Processing /version command");
-        return c.json({
-          type: 4,
+        const response: DiscordInteractionResponse = {
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
           data: {
-            content: VERSION,
+            content: `Bot Version: ${VERSION}`,
           },
-        });
+        };
+        return c.json(response);
       }
 
       if (
