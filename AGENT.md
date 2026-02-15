@@ -144,6 +144,19 @@ BILL_API_PRIVATE_KEY        # Health endpoint auth
 - Add to `pnpm-workspace.yaml` catalog for version consistency
 - Reference workspace packages with `workspace:*`
 
+### Build Scripts (postinstall)
+
+Dependencies with postinstall scripts are ignored by default (`ignoredBuiltDependencies` in `pnpm-workspace.yaml`).
+
+**Decision criteria:**
+- Modern packages (esbuild, workerd, sharp) distribute platform-specific binaries via `optionalDependencies`
+- postinstall scripts are for validation/optimization only, not required for functionality
+- Ignoring build scripts improves security (supply chain attack mitigation) and install speed
+
+**Only allow build scripts when:**
+- Package explicitly requires postinstall to function (rare)
+- Documented evidence that optionalDependencies alone is insufficient
+
 ### Pre-commit Check
 
 ```bash

@@ -14,4 +14,9 @@ catalog:
   typescript: "5.9.3"
   vitest: "4.0.18"
 
+allowBuilds:
+  esbuild: false
+  workerd: false
+  sharp: false
+
 minimumReleaseAge: 1440
