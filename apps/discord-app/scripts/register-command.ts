@@ -45,7 +45,7 @@ async function registerCommand() {
 
   const command: Command = {
     name: commandName,
-    description: "",
+    description: "Discord Bot",
     options: [
       {
         type: 1,
@@ -73,6 +73,11 @@ async function registerCommand() {
             ],
           },
         ],
+      },
+      {
+        type: 1,
+        name: "version",
+        description: "Botのバージョンを表示します",
       },
     ],
   };

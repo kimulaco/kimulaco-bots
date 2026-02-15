@@ -5,6 +5,7 @@ import { generateAwsConstSummary } from "../services/summary";
 import { formatDiscordMessage, formatErrorMessage } from "../services/discord";
 import { createLogger } from "../services/logger";
 import type { Env } from "../type";
+import { VERSION } from "../version";
 
 const logger = createLogger();
 const api = new Hono<{ Bindings: Env }>();
@@ -87,6 +88,16 @@ api.post("/", async (c) => {
       }
 
       const expectedCommandName = env.DISCORD_COMMAND_NAME;
+      if (commandName === expectedCommandName && subcommandName === "version") {
+        logger.info("Processing /version command");
+        return c.json({
+          type: 4,
+          data: {
+            content: VERSION,
+          },
+        });
+      }
+
       if (
         (commandName === expectedCommandName &&
           subcommandName === "bill" &&
