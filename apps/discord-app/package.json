@@ -19,14 +19,14 @@
   "dependencies": {
     "@packages/aws": "workspace:*",
     "@packages/discord": "workspace:*",
-    "hono": "4.10.4",
+    "hono": "4.11.9",
     "tweetnacl": "1.0.3"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "4.20251014.0",
+    "@cloudflare/workers-types": "4.20260214.0",
     "@types/node": "catalog:",
-    "tsx": "4.20.6",
+    "tsx": "4.21.0",
     "typescript": "catalog:",
-    "wrangler": "4.45.3"
+    "wrangler": "4.65.0"
   }
 }
