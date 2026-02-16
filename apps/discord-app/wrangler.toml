@@ -2,6 +2,11 @@ name = "kimulaco-discord-bot-dev"
 main = "src/index.ts"
 compatibility_date = "2023-12-01"
 
+[observability]
+[observability.logs]
+enabled = false
+invocation_logs = true
+
 [triggers]
 crons = ["0 1 * * 1"] # 毎週月曜日 日本時間10時に実行
 
